@@ -41,14 +41,14 @@ const testProjects = [
   `./demo_projects/denotrain`,
 ];
 
-const projectFolder = testProjects[0];
+const projectFolder = testProjects[1];
 const configFile = `deno-config.json`;
 const fullPath = `${projectFolder}/${configFile}`;
 
 function permissionRequest(permissions: DenoPermission[]) {
   return new Promise(async (resolve, reject) => {
     if (permissions.length > 0) {
-      const buffer = new Uint8Array(100);
+      let buffer = new Uint8Array(100);
       let formattedPermissions: string[] = [];
       permissions.map((permission) => {
         formattedPermissions.push(`\n  - ${permission}`);
@@ -60,21 +60,26 @@ function permissionRequest(permissions: DenoPermission[]) {
       );
       console.log("\nContinue (y/N)?");
 
-      const input = <number> await Deno.stdin.read(buffer);
-      const answer = new TextDecoder().decode(buffer.subarray(0, input)).trim()
-        .toLowerCase();
+      const input = await Deno.stdin.read(buffer);
+      if (input) {
+        const answer = new TextDecoder().decode(buffer.subarray(0, input))
+          .trim()
+          .toLowerCase();
 
-      switch (answer) {
-        case "1":
-        case "y":
-        case "yes":
-          // TODO: add question if answer should be remembered (unless permissions have changed)
-          resolve();
-          break;
+        switch (answer) {
+          case "1":
+          case "y":
+          case "yes":
+            // TODO: add question if answer should be remembered (unless permissions have changed)
+            resolve();
+            break;
 
-        default:
-          reject();
-          break;
+          default:
+            reject();
+            break;
+        }
+      } else {
+        reject();
       }
     } else {
       resolve();
@@ -133,7 +138,7 @@ if (existsSync(fullPath)) {
         logStdout(process);
         updateInterval = setInterval(() => {
           logStdout(process);
-        }, 100);
+        }, 50);
       }).catch(() => {
         console.log("> Permissions rejected!");
       });
