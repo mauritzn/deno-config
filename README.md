@@ -76,7 +76,16 @@ Which permissions the project requires to run. If this does not exist, then no p
 
 Package proxies would be a way of allowing for centralized version management and would also make it easier to include a package in multiple files.
 
-Import would use `@`, to show that you are accessing a proxy package.
+Import would use `@`, to show that you are accessing a package proxy.
+
+```ts
+// Without package proxy
+import { Application, Router } from "https://deno.land/x/denotrain@v0.4.0/mod.ts"
+
+// With package proxy
+import { Application, Router } from "@denotrain";
+```
+
 
 **Example use-cases:**
   - You are using a package in multiple files and don't want to have to use a massive URL.
