@@ -1,0 +1,10 @@
+{
+  "name": "denotrain_testing",
+  "description": "Simple test of denotrain",
+  "version": "1.0.0",
+  "author": "Mauritz N",
+  "main": "server.ts",
+  "permissions": [
+    "allow-net"
+  ]
+}

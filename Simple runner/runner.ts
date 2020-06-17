@@ -35,9 +35,13 @@ const validPermissions: DenoPermission[] = [
   "allow-write",
 ];
 
-const projectFolder = `/home/<user>/Documents/Deno Projects/multi_file_testing`; // for testing only
-//const projectFolder = `/home/<user>/Documents/Deno Projects/denotrain`;
+// for testing only
+const testProjects = [
+  `./demo_projects/multi_file_testing`,
+  `./demo_projects/denotrain`,
+];
 
+const projectFolder = testProjects[0];
 const configFile = `deno-config.json`;
 const fullPath = `${projectFolder}/${configFile}`;
 
