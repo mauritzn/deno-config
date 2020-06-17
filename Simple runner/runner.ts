@@ -10,6 +10,35 @@ function existsSync(filePath: string): boolean {
   }
 }
 
+type Colors =
+  | "black"
+  | "red"
+  | "green"
+  | "yellow"
+  | "blue"
+  | "magenta"
+  | "cyan"
+  | "white";
+const logColors: { [colorName: string]: string } = {
+  black: "\x1b[30m",
+  red: "\x1b[31m",
+  green: "\x1b[32m",
+  yellow: "\x1b[33m",
+  blue: "\x1b[34m",
+  magenta: "\x1b[35m",
+  cyan: "\x1b[36m",
+  white: "\x1b[37m",
+};
+
+function colorLog(text: string | string[], color: Colors = "white") {
+  const logColor = (color in logColors ? logColors[color] : logColors["white"]);
+  if (typeof text === "string") {
+    console.log(`${logColor}${text}\x1b[0m`);
+  } else {
+    console.log(`${logColor}${text[0]}\x1b[0m`, text[1]);
+  }
+}
+
 type DenoPermission =
   | "allow-env"
   | "allow-hrtime"
@@ -58,13 +87,14 @@ function permissionRequest(permissions: DenoPermission[]) {
       let buffer = new Uint8Array(100);
       let formattedPermissions: string[] = [];
       permissions.map((permission) => {
-        formattedPermissions.push(`\n  - ${permission}`);
+        formattedPermissions.push(`  - ${permission}`);
       });
 
-      console.log(
+      colorLog(
         "The following permissions are required to run this project:",
-        formattedPermissions.join(""),
+        "yellow",
       );
+      console.log(formattedPermissions.join("\n"));
       console.log("\nContinue (y/N)?");
 
       const input = await Deno.stdin.read(buffer);
@@ -106,9 +136,9 @@ if (existsSync(fullPath)) {
           (splitPermission[0].toLowerCase() as DenoPermission),
         );
         if (valid) return true;
-        else console.log(`!! Invalid permission: ${permission} !!`);
+        else colorLog(`!! Invalid permission: ${permission} !!`, "red");
       } else {
-        console.log(`!! Invalid permission: ${permission} !!`);
+        colorLog(`!! Invalid permission: ${permission} !!`, "red");
       }
       return false;
     });
@@ -124,12 +154,11 @@ if (existsSync(fullPath)) {
       runCommand.push(execFile);
 
       permissionRequest(permissions).then(async () => {
-        console.log(`Running: ${projectFolder}/${execFile}\n`);
+        colorLog(["Run", `${projectFolder}/${execFile}\n`], "green");
         let process;
         runProject(runCommand, process);
       }).catch((err) => {
-        console.log(err);
-        console.log("> Permissions rejected!");
+        colorLog(">> Permissions rejected! <<", "yellow");
       });
     } else {
       throw new Error(`Missing main field!`);
@@ -174,11 +203,9 @@ async function startWatcher(runCommand: string[], process: Deno.Process) {
       lastEvent = currentEvent;
       process.close();
 
-      console.log("\n>> Project change detect, restarting... <<");
-
+      colorLog("\n>> Project change detected, restarting... <<", "cyan");
       runProject(runCommand, process);
       break;
     }
-    // { kind: "create", paths: [ "/foo.txt" ] }
   }
 }
