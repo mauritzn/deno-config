@@ -5,6 +5,12 @@ Relates to Deno issue [#1431](https://github.com/denoland/deno/issues/1431) and 
 
 -----
 
+**Basic concept Deno runners:**
+  - [Simple Deno runner](https://gist.github.com/mauritzn/01f3bff3468e5540c193f6e4976be88b), created using Deno by [@mauritzn](https://github.com/mauritzn).
+  - [denorun](https://github.com/zinthose/denorun), created using Python by [@zinthose](https://github.com/zinthose).
+
+-----
+
 ### name
 
 The name of the project, could have similar restrictions as the name field for Node.js.
