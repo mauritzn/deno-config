@@ -126,7 +126,7 @@ if (existsSync(fullPath)) {
       permissionRequest(permissions).then(async () => {
         console.log(`Running: ${projectFolder}/${execFile}\n`);
         let process;
-        startDeno(runCommand, process);
+        runProject(runCommand, process);
       }).catch((err) => {
         console.log(err);
         console.log("> Permissions rejected!");
