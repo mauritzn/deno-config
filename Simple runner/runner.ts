@@ -42,9 +42,15 @@ const testProjects = [
   `./demo_projects/denotrain`,
 ];
 
-const projectFolder = testProjects[0];
+const projectFolder = testProjects[2];
 const configFile = `deno-config.json`;
 const fullPath = `${projectFolder}/${configFile}`;
+const watchMode = false;
+const watchFsEvents = [
+  "create",
+  "modify",
+  "remove",
+];
 
 function permissionRequest(permissions: DenoPermission[]) {
   return new Promise(async (resolve, reject) => {
@@ -119,18 +125,10 @@ if (existsSync(fullPath)) {
 
       permissionRequest(permissions).then(async () => {
         console.log(`Running: ${projectFolder}/${execFile}\n`);
-        const process = Deno.run({
-          cmd: runCommand,
-          cwd: projectFolder,
-          stdout: "piped",
-        });
-
-        let p = new Uint8Array(1);
-        while (await process.stdout?.read(p) !== null) {
-          Deno.stdout.writeSync(p);
-          p = new Uint8Array(1);
-        }
-      }).catch(() => {
+        let process;
+        startDeno(runCommand, process);
+      }).catch((err) => {
+        console.log(err);
         console.log("> Permissions rejected!");
       });
     } else {
@@ -143,4 +141,44 @@ if (existsSync(fullPath)) {
   throw new Error(
     `Could not find config file, please make sure the file exists (${fullPath}).`,
   );
+}
+
+async function runProject(
+  runCommand: string[],
+  process: Deno.Process | undefined,
+) {
+  process = Deno.run({
+    cmd: runCommand,
+    cwd: projectFolder,
+    stdout: "piped",
+  });
+
+  if (watchMode) startWatcher(runCommand, process);
+
+  let p = new Uint8Array(1);
+  while (await process.stdout?.read(p) !== null) {
+    Deno.stdout.writeSync(p);
+    p = new Uint8Array(1);
+  }
+}
+
+async function startWatcher(runCommand: string[], process: Deno.Process) {
+  let lastEvent = 0;
+  const watcher = Deno.watchFs(projectFolder);
+  for await (const event of watcher) {
+    const currentEvent = Date.now();
+    if (
+      watchFsEvents.includes(event.kind) &&
+      (currentEvent - lastEvent > 100)
+    ) {
+      lastEvent = currentEvent;
+      process.close();
+
+      console.log("\n>> Project change detect, restarting... <<");
+
+      runProject(runCommand, process);
+      break;
+    }
+    // { kind: "create", paths: [ "/foo.txt" ] }
+  }
 }
