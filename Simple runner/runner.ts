@@ -82,6 +82,13 @@ function permissionRequest(permissions: DenoPermission[]) {
   });
 }
 
+function logStdout(process: Deno.Process) {
+  let p: Uint8Array = new Uint8Array(1024);
+  process.stdout?.read(p).then((value) => {
+    console.log(new TextDecoder("utf-8").decode(p));
+  });
+}
+
 if (existsSync(fullPath)) {
   const plainData = Deno.readTextFileSync(fullPath);
   try {
@@ -113,18 +120,20 @@ if (existsSync(fullPath)) {
 
       permissionRequest(permissions).then(() => {
         console.log(`Running: ${projectFolder}/${execFile}`);
+        let updateInterval: any = null;
         const process = Deno.run({
           cmd: runCommand,
           cwd: projectFolder,
           stdout: "piped",
         });
-
-        // TODO: live update output (for projects that keep running forever)
-        process.output().then((result) => {
-          console.log(new TextDecoder("utf-8").decode(result));
-        }).catch((err) => {
-          throw err;
+        process.status().then((test) => {
+          clearInterval(updateInterval);
         });
+
+        logStdout(process);
+        updateInterval = setInterval(() => {
+          logStdout(process);
+        }, 100);
       }).catch(() => {
         console.log("> Permissions rejected!");
       });
