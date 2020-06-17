@@ -1,0 +1,14 @@
+{
+  "name": "simple_demo",
+  "description": "Simple demo for config file",
+  "version": "1.0.0",
+  "author": "Mauritz N",
+  "main": "server.ts",
+  "permissions": [
+    "allow-net=mauritzonline.com",
+    "allow-read"
+  ],
+  "packageProxies": {
+    "denotrain": "https://deno.land/x/denotrain@v0.4.0/mod.ts"
+  }
+}
