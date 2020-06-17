@@ -38,6 +38,7 @@ const validPermissions: DenoPermission[] = [
 // for testing only
 const testProjects = [
   `./demo_projects/multi_file_testing`,
+  `./demo_projects/stdin_testing`,
   `./demo_projects/denotrain`,
 ];
 
