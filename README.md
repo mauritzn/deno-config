@@ -1,6 +1,8 @@
 # deno-config
 Repo for proposed Deno config used by a runner. The proposed config fields are not the only fields I think should be available, but rather the ones that are most important.
 
+Relates to Deno issue [#1431](https://github.com/denoland/deno/issues/1431) and my original [Gist](https://gist.github.com/mauritzn/04d8a6e910d6612356d4daf231c7a6d1) version.
+
 -----
 
 ### name
