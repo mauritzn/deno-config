@@ -58,6 +58,12 @@ Which file should be run.
 
 <br />
 
+### unstableFlag
+
+Whether or not the project should run using Deno's `--unstable` flag.
+
+<br />
+
 ### permissions
 
 Which permissions the project requires to run. If this does not exist, then no permissions are assumed.
