@@ -66,9 +66,9 @@ Which permissions the project requires to run. If this does not exist, then no p
   - allow-env
   - allow-hrtime
   - allow-net / allow-net=URL1 / allow-net=URL1,URL2
-  - allow-read
+  - allow-read / allow-read=PATH1 / allow-read=PATH1,PATH2
+  - allow-write / allow-write=PATH1 / allow-write=PATH1,PATH2
   - allow-run
-  - allow-write
 
 <br />
 
