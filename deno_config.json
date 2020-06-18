@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "author": "Mauritz N",
   "main": "server.ts",
+  "unstableFlag": false,
   "permissions": [
     "allow-net=mauritzonline.com",
     "allow-read"
