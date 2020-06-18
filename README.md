@@ -6,7 +6,7 @@ Relates to Deno issue [#1431](https://github.com/denoland/deno/issues/1431) and 
 -----
 
 **Basic concept Deno runners:**
-  - [Simple Deno runner](https://github.com/mauritzn/deno-config/blob/master/Simple%20runner/runner.ts), created using Deno *(TypeScript)* by [@mauritzn](https://github.com/mauritzn).
+  - [deno-runner](https://github.com/mauritzn/deno-runner), created using Deno *(TypeScript)* by [@mauritzn](https://github.com/mauritzn).
   - [denorun](https://github.com/zinthose/denorun), created using Python by [@zinthose](https://github.com/zinthose).
 
 -----
