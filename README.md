@@ -13,7 +13,7 @@ Relates to Deno issue [#1431](https://github.com/denoland/deno/issues/1431) and 
 
 ### name
 
-The name of the project, could have similar restrictions as the name field for Node.js.
+The name of the project, could have similar restrictions as the name field in [NPM's package.json](https://docs.npmjs.com/files/package.json#name). But since the name field is used more as metadata only, it might be better to not have a lot of restrictions on it.
 
 <br />
 
@@ -31,7 +31,7 @@ Current version of the project. Semantic Versioning (MAJOR.MINOR.PATCH).
 
 ### author
 
-Who the author of the project is, can be either an object, or a string.
+Who the author of the project is, can be either an object, or a string. Can include name, email and URL.
 
 **String:** `"Barney Rubble <b@rubble.com> (http://barnyrubble.tumblr.com/)"`
 
@@ -50,17 +50,53 @@ Who the author of the project is, can be either an object, or a string.
 
 Would have the same format as author, but would be an array.
 
+**Array:**
+```json
+[
+  {
+    "name": "Barney Rubble",
+    "email": "b@rubble.com",
+    "url": "https://barnyrubble.tumblr.com/"
+  },
+  "Jessica Hendersson <j@hendersson.com> (https://jessicahendersson.tumblr.com/)"
+]
+```
+
 <br />
 
 ### main *(required)*
 
-Which file should be run.
+Which file should be run using Deno. This should be a relative path to the file to run.
+
+**Example (src folder):**
+
+In the example below, main would be `"src/index.ts"` or `"./src/index.ts"`.
+
+```
+my-project
+  src
+    index.ts
+    utils.ts
+  deno_config.json
+  README.md
+```
+
+**Example (same folder):**
+
+In the example below, main would be `"index.ts"` or `"./index.ts"`.
+
+```
+my-project
+  index.ts
+  deno_config.json
+  README.md
+```
 
 <br />
 
 ### unstableFlag
 
-Whether or not the project should run using Deno's `--unstable` flag.
+Whether or not the project should run using Deno's `--unstable` flag. unstableFlag take a boolean value either `true` or `false`. If unstableFlag is not provided then it defaults to `false`. 
 
 <br />
 
