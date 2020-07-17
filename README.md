@@ -102,15 +102,16 @@ Whether or not the project should run using Deno's `--unstable` flag. unstableFl
 
 ### permissions
 
-Which permissions the project requires to run. If this does not exist, then no permissions are assumed.
+Which permissions the project requires to run. If this does not exist, then no permissions are assumed. Permissions marked as **"special dangerous permission"** would show additional warnings when running, e.g. `allow-run` should give a warning that it can allow for file system changes and privilege escalation.
 
 **Valid permissions:**
+  - allow-all *(special dangerous permission)*
   - allow-env
   - allow-hrtime
   - allow-net / allow-net=URL1 / allow-net=URL1,URL2
   - allow-read / allow-read=PATH1 / allow-read=PATH1,PATH2
   - allow-write / allow-write=PATH1 / allow-write=PATH1,PATH2
-  - allow-run
+  - allow-run *(special dangerous permission)*
 
 <br />
 
